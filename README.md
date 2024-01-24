@@ -3,7 +3,8 @@
 ## About this
 My Ass is an program I wrote to convert an assembly like program to hexadecimal 
 representation to avoid doing it by hand. It is specifically designed for 
-our instruction set.
+our instruction set.  
+This is a very basic program, just usnig string manipulations to accomplish the assembling.
 
 ## Usage
 Currently the assembler doesn't check if the program is valid, other than ensuring that the 

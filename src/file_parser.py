@@ -10,6 +10,12 @@ def parse_file(ass_file) -> []:
         for line in f.readlines():
             line = line.strip()
             line = line.split(", ")
-            lines.append(line)
+
+            if len(line) == 1:
+                if line[0] != '':
+                    lines.append(line)
+
+            if len(line) > 1:
+                lines.append(line)
 
     return lines

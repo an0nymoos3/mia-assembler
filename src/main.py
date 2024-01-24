@@ -11,13 +11,16 @@ def print_program(program) -> None:
         print(f"line: {line_nr} | {line}")
         line_nr += 1
 
-def main():
+
+def main() -> None:
+    """ main() """
     # Assume user sends .ass file as first arg
     file = sys.argv[1]
     
     text_program = parse_file(file)
     hex_program = assemble(text_program)
     print_program(hex_program)
+
 
 if __name__ == "__main__":
     main()
