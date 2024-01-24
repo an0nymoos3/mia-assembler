@@ -32,17 +32,22 @@ program has to be validated by the programmer to guarantee a successful assemble
 
 ### Other features
 - Omitting M. If M is not detected by assembler it will assume the mode is 00.
+- Comments! Write comments using #. Either on the same line as code or seperate lines!
+```
+...
+# This is a line of comments
+...
 
+... # This is a comment on the same line as code.
+```
 
 ## Planned features
 - Branch/jump to name rather than relative instructions.
 Example: 
 ```
-BNE #BRANCH
+BNE &BRANCH
 ...
 
-#BRANCH
+&BRANCH
 ...
 ```
-
-- Python/ shell style comments using # to declare a comment.
