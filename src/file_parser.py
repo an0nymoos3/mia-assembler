@@ -9,6 +9,8 @@ def parse_file(ass_file) -> []:
     with open(ass_file) as f:
         for line in f.readlines():
             line = line.strip()
+            
+            # Split each instruction
             line = line.split(", ")
 
             if len(line) == 1:

@@ -16,6 +16,7 @@ program has to be validated by the programmer to guarantee a successful assemble
 ```
 
 ## Features
+### Instructions
 
 | Instruction |     Args    |           Meaning           |
 | ----------- | ----------- | --------------------------- |
@@ -29,8 +30,9 @@ program has to be validated by the programmer to guarantee a successful assemble
 | BNE         | ADR         | PC:= PC+1                   |
 | HALT        |             | Exits program               |
 
-Where M is missing use M = 00.  
-All features have not been tested.
+### Other features
+- Omitting M. If M is not detected by assembler it will assume the mode is 00.
+
 
 ## Planned features
 - Branch/jump to name rather than relative instructions.
@@ -43,5 +45,4 @@ BNE #BRANCH
 ...
 ```
 
-- Autofill 00 where M is missing. 
-
+- Python/ shell style comments using # to declare a comment.

@@ -13,6 +13,7 @@
 
 def assemble(program) -> []:
     """ Converts text representation of .ass program to hex representation """
+    remove_comments(program)
     bin_program = text_to_bin(program)
 
     hex_program = []
@@ -120,6 +121,37 @@ def get_adr(line) -> str:
     exit(1)
 
 
+def remove_comments(program) -> []:
+    """ Program of all its comments. Leaving only lines of code. """
+    empty_lines = []
+
+    # Strip comments and look for empty lines afterwards
+    for i in range(len(program)):
+        line = program[i]
+
+        for j in range(len(line)):
+            if "#" in line[j]:
+                line[j] = remove_comment_from_word(line[j])
+        
+        if line[0] == '':
+            empty_lines.append(i)
+
+    # Remove any empty lines
+    for line_nr in empty_lines:
+        program.remove(program[line_nr])
+
+    return program
+
+
+def remove_comment_from_word(word) -> str:
+    """ Due to the nature of the assembler, comments on same line as 
+    code will be part of the final argument or word or the line.
+    Therefore we check for the # and remove anything after it."""
+    for i in range(len(word)):
+        if word[i] == "#":
+            return word[:i]
+            
+
 def hex_to_bin(hex) -> str:
     """ Converts a hex number (likely address) to binary representation """
     hex = hex.strip("$")
@@ -130,6 +162,7 @@ def hex_to_bin(hex) -> str:
 def bin_to_hex(bin) -> str:
     """ Converts a bin number (program instruciton) to hexadecimal representation """
     return "{0:04X}".format(int(bin, 2))
+
 
 def dec_to_bin(Y) -> str:
     """ Covers LSR instruction which uses Y instead of ADR """
