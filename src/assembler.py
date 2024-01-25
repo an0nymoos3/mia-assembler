@@ -239,7 +239,7 @@ def calc_branch_jmps(program) -> list:
         if line[0] == "BNE" or line[0] == "BRA" or line[0] == "BEQ" or line[0] == "BGE":
             if "#" in line[1]:
                 branch_name = line[1].strip()
-                branch_line_num = find_branch(program, branch_name) - 1
+                branch_line_num = find_branch(program, branch_name) - 2
 
                 if i < branch_line_num:
                     rel_jump = branch_line_num - i
