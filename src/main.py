@@ -13,7 +13,7 @@ def export_program(program, source_code, file_name, debug) -> None:
         line_nr = 0
 
         for i in range(len(program)):
-            print(f"line: {dec_to_hex(str(line_nr))} | {program[i]} > {source_code[i]}")
+            print(f"line: {dec_to_hex(str(line_nr))} | {source_code[i]} => <{program[i]}>")
             line_nr += 1
 
     print(f"Exporting to: {file_name}...")
