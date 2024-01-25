@@ -1,0 +1,7 @@
+; Load value from $FE in PM to register 0.
+LOAD, GR0, 00, $FE
+
+; Store value from register 0 to $FF in PM.
+STORE, GR0, 00, $FF
+
+HALT ; End execution

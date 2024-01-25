@@ -1,0 +1,6 @@
+LOAD, GR0, $AA
+BRA, #BRANCH_NAME ; This will jump to branch called #BRANCH_NAME 
+
+LOAD, GR0, $AB ; This line is skipped due to jump
+
+STORE, GR0, $AB #BRANCH_NAME ; Jumps to this line
