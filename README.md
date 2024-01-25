@@ -28,6 +28,9 @@ program has to be validated by the programmer to guarantee a successful assemble
 | LSR         | GRx, M, Y   | Logical shift right Y steps |
 | BRA         | ADR         | PC :=PC+1+ADR               |
 | BNE         | ADR         | PC:= PC+1+ADR, if Z=0       |
+| BGE         | ADR         | PC:= PC+1+ADR, if N=1       |
+| BEQ         | ADR         | PC:= PC+1+ADR, if Z=1       |
+| CMP         | GRx, M, ADR | GRx-PM(A)                   |
 | HALT        |             | Exits program               |
 
 ### Other features
