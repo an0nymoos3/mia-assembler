@@ -46,8 +46,15 @@ program has to be validated by the programmer to guarantee a successful assemble
 
 - Absolute jumps with branch names. Example:
 ```
-BRA #JUMP_HERE
-
-
+BRA, #JUMP_HERE
+...
 LOAD, GRx, $AB #JUMP_HERE
+```
+Is the same as: 
+
+```
+BRA, $02
+...
+LOAD, GRx, $AB
+
 ```
