@@ -15,9 +15,13 @@ def print_program(program) -> None:
 def main() -> None:
     """ main() """
     # Assume user sends .ass file as first arg
-    file = sys.argv[1]
+    file_name = sys.argv[1]
+
+    if ".ass" not in file_name:
+        print("Invalid argument! \n.ass file not detected!")
+        exit(1)
     
-    text_program = parse_file(file)
+    text_program = parse_file(file_name)
     hex_program = assemble(text_program)
     print_program(hex_program)
 

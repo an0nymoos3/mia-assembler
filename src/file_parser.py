@@ -11,7 +11,7 @@ def parse_file(ass_file) -> []:
             line = line.strip()
             
             # Split each instruction
-            line = line.split(", ")
+            line = line.split(",")
 
             if len(line) == 1:
                 if line[0] != '':

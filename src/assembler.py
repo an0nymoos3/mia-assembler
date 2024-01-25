@@ -13,9 +13,18 @@
 
 def assemble(program) -> list:
     """ Converts text representation of .ass program to hex representation """
-    remove_whole_line_comments(program) # Need to do this for line jump calculations to work
+    remove_comments(program) # Need to do this for line jump calculations to work
+
+    #for line in program:
+    #    print(line)
+
     calc_branch_jmps(program)
-    remove_remaining_comments(program)
+    remove_branch_names(program)
+
+    for line in program:
+        print(line)
+
+
     bin_program = text_to_bin(program)
 
     hex_program = []
@@ -31,18 +40,27 @@ def text_to_bin(program) -> []:
 
     # Go through each line
     for line in program:
-        bin_line = "" # Start with an empty string
+        try:
+            bin_line = "" # Start with an empty string
 
-        bin_line += get_instruction(line)
-        bin_line += get_register(line)
-        bin_line += get_mode(line)
-        bin_line += get_adr(line)
+            # Check if line is value, used for imidiate modes
+            if "@" in line[0]:
+                bin_line = imi_hex_to_bin(line[0])
+            else:
+                bin_line += get_instruction(line)
+                bin_line += get_register(line)
+                bin_line += get_mode(line)
+                bin_line += get_adr(line)
 
-        if len(bin_line) != 16:
-            print(f"Error assembling program! \nLine is not 16 bits long! \nLine: {line} \nResult: {bin_line}")
+            if len(bin_line) != 16:
+                print(f"Error assembling program! \nLine is not 16 bits long! \nLine: {line} \nResult: {bin_line}")
+                exit(1)
+
+            bin_program.append(bin_line)
+
+        except Exception as e:
+            print(f"Error compiling line: {line} \n{e}")
             exit(1)
-
-        bin_program.append(bin_line)
 
     return bin_program
 
@@ -58,6 +76,9 @@ def get_instruction(line) -> str:
         "LSR": "0101",
         "BRA": "0110",
         "BNE": "0111",
+        "BGE": "1000",
+        "BEQ": "1001",
+        "CMP": "1010",
         "HALT": "1111",
     }
 
@@ -123,20 +144,7 @@ def get_adr(line) -> str:
     exit(1)
 
 
-def remove_whole_line_comments(program) -> list:
-    comment_lines = []
-    
-    for i in range(len(program)):
-        if "#" in program[i][0]:
-            comment_lines.append(i)
-
-    for line in comment_lines:
-        program.remove(program[line])
-
-    return program
-
-
-def remove_remaining_comments(program) -> list:
+def remove_comments(program) -> list:
     """ Program of all its comments. Leaving only lines of code. """
     empty_lines = []
 
@@ -145,8 +153,8 @@ def remove_remaining_comments(program) -> list:
         line = program[i]
 
         for j in range(len(line)):
-            if "#" in line[j]:
-                line[j] = remove_comment_from_word(line[j])
+            if ";" in line[j]:
+                line[j] = remove_content_from_word(line[j], ";")
         
         if line[0] == '':
             empty_lines.append(i)
@@ -158,18 +166,41 @@ def remove_remaining_comments(program) -> list:
     return program
 
 
-def remove_comment_from_word(word) -> str:
+def remove_content_from_word(word, symbol) -> str:
     """ Due to the nature of the assembler, comments on same line as 
     code will be part of the final argument or word or the line.
     Therefore we check for the # and remove anything after it."""
     for i in range(len(word)):
-        if word[i] == "#":
+        if word[i] == symbol:
             return word[:i]
             
+
+def remove_branch_names(program) -> list:
+    """ Removes #BRANCH_NAME from lines of code. """
+    empty_lines = []
+
+    # Strip comments and look for empty lines afterwards
+    for i in range(len(program)):
+        line = program[i]
+
+        for j in range(len(line)):
+            if "#" in line[j]:
+                line[j] = remove_content_from_word(line[j], "#")
+        
+        if line[0] == '':
+            empty_lines.append(i)
+
+    # Remove any empty lines
+    for line_nr in empty_lines:
+        program.remove(program[line_nr])
+
+    return program
+
 
 def hex_to_bin(hex) -> str:
     """ Converts a hex number (likely address) to binary representation """
     hex = hex.strip("$")
+    hex = hex.strip(" $")
     hex = hex.lower()
     return "{0:08b}".format(int(hex, 16)) 
     
@@ -189,12 +220,18 @@ def dec_to_hex(dec) -> str:
     return "{0:02X}".format(int(dec, 10))
 
 
+def imi_hex_to_bin(hex) -> str:
+    """ Takes the @value and converts it to binary to be ready for PM """
+    hex = hex.strip("@")
+    hex = hex.lower()
+    return "{0:016b}".format(int(hex, 16))
+
 def calc_branch_jmps(program) -> list:
     """ Replaces all jumps to #NAME with the proper relative jump numbers """
     for i in range(len(program)):
         line = program[i]
 
-        if line[0] == "BNE" or line[0] == "BRA":
+        if line[0] == "BNE" or line[0] == "BRA" or line[0] == "BEQ" or line[0] == "BGE":
             if "#" in line[1]:
                 branch_name = line[1].strip()
                 branch_line_num = find_branch(program, branch_name) - 1
@@ -208,12 +245,17 @@ def calc_branch_jmps(program) -> list:
                 # so that it gets parsed to binary later in assember
                 line[1] = "$" + dec_to_hex(str(rel_jump))
 
+
     return program
 
 
 def find_branch(program, branch_name) -> int:
     """ This function assumes there will be a brach with the name specified. """
     for i in range(len(program)):
-        for word in program[i]:
-            if branch_name in word:
-                return i
+        if "BNE" not in program[i] and "BGE" not in program[i] and "BEQ" not in program[i] and "BRA" not in program[i]:
+            for word in program[i]:
+                if branch_name in word:
+                    return i
+
+    print(f"Not branch to jump to found for {branch_name}")
+    exit(1)

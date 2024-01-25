@@ -32,13 +32,13 @@ program has to be validated by the programmer to guarantee a successful assemble
 
 ### Other features
 - Omitting M. If M is not detected by assembler it will assume the mode is 00.
-- Comments! Write comments using #. Either on the same line as code or seperate lines!
+- Comments! Write comments using ;. Either on the same line as code or seperate lines!
 ```
 ...
-# This is a line of comments
+; This is a line of comments
 ...
 
-... # This is a comment on the same line as code.
+... ; This is a comment on the same line as code.
 ```
 
 - Absolute jumps with branch names. Example:
