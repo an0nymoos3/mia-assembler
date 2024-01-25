@@ -253,4 +253,4 @@ def find_branch(program, branch_name) -> int:
                 if branch_name in word:
                     return i
 
-    print(f"Not branch to jump to found for {branch_name}")
+    print(f"No branch found with name '{branch_name}'")
