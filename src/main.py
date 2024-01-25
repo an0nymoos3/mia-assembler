@@ -4,11 +4,11 @@ import sys
 from file_parser import parse_file
 from assembler import assemble, dec_to_hex
 
-def print_program(program) -> None:
+def print_program(program, source_code) -> None:
     """  Prints final program to terminal. """
     line_nr = 0
-    for line in program:
-        print(f"line: {dec_to_hex(str(line_nr))} | {line}")
+    for i in range(len(program)):
+        print(f"line: {dec_to_hex(str(line_nr))} | {program[i]} > {source_code[i]}")
         line_nr += 1
 
 
@@ -23,7 +23,7 @@ def main() -> None:
     
     text_program = parse_file(file_name)
     hex_program = assemble(text_program)
-    print_program(hex_program)
+    print_program(hex_program, text_program)
 
 
 if __name__ == "__main__":

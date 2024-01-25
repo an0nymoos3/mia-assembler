@@ -21,10 +21,6 @@ def assemble(program) -> list:
     calc_branch_jmps(program)
     remove_branch_names(program)
 
-    for line in program:
-        print(line)
-
-
     bin_program = text_to_bin(program)
 
     hex_program = []
@@ -38,11 +34,6 @@ def text_to_bin(program) -> []:
     """ Converts text representation to binary """
     bin_program = []
     line_num = 0
-
-    # Remove all spaces
-    for i in range(len(program)):
-        for j in range(len(program[i])):
-            program[i][j] = program[i][j].strip()
 
     # Go through each line
     for line in program:
@@ -84,8 +75,8 @@ def get_instruction(line) -> str:
         "LSR": "0101",
         "BRA": "0110",
         "BNE": "0111",
-        "BGE": "1000",
-        "BEQ": "1001",
+        "BEQ": "1000",
+        "BGE": "1001",
         "CMP": "1010",
         "HALT": "1111",
     }
