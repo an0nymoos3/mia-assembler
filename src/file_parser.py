@@ -6,7 +6,7 @@
 
 def parse_file(ass_file) -> []:
     lines = []
-    with open(ass_file) as f:
+    with open(ass_file, 'r') as f:
         for line in f.readlines():
             line = line.strip()
             

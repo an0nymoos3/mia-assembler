@@ -4,7 +4,7 @@
 My Ass is an program I wrote to convert an assembly like program to hexadecimal 
 representation to avoid doing it by hand. It is specifically designed for 
 our instruction set.  
-This is a very basic program, just usnig string manipulations to accomplish the assembling.
+This is a very basic program, just usnig string manipulations to accomplish the assembling.  
 
 ## Usage
 Currently the assembler doesn't check if the program is valid, other than ensuring that the 
@@ -13,6 +13,12 @@ program has to be validated by the programmer to guarantee a successful assemble
 
 ```
 ./src/main.py <your_program>.ass
+```
+The program exports the result into a .mia file in the working directory. If you want to see how it 
+generated your assembly code to machine code you can use the `--debug` flag.
+
+```
+./src/main.py <your_program>.ass --debug
 ```
 
 ## Features
