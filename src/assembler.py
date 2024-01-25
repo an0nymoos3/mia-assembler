@@ -80,6 +80,7 @@ def get_instruction(line) -> str:
         "BEQ": "1000",
         "BGE": "1001",
         "CMP": "1010",
+        "RAR": "1011",
         "HALT": "1111",
     }
 
@@ -135,6 +136,10 @@ def get_adr(line) -> str:
     if line[0] == "HALT":
         return "00000000"
     
+    # Check if halt instruction
+    if line[0] == "RAR":
+        return "00000000"
+
     # Logical Shift Right edge case, doesn't use ADR, instead passes a constant Y
     if line[0] == "LSR":
         return dec_to_bin(line[-1])
