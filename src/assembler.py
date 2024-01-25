@@ -13,6 +13,8 @@
 
 def assemble(program) -> list:
     """ Converts text representation of .ass program to hex representation """
+    
+    
     remove_comments(program) # Need to do this for line jump calculations to work
 
     #for line in program:
@@ -222,6 +224,7 @@ def imi_hex_to_bin(hex) -> str:
     hex = hex.strip("@")
     hex = hex.lower()
     return "{0:016b}".format(int(hex, 16))
+
 
 def calc_branch_jmps(program) -> list:
     """ Replaces all jumps to #NAME with the proper relative jump numbers """
