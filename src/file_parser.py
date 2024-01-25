@@ -20,4 +20,10 @@ def parse_file(ass_file) -> []:
             if len(line) > 1:
                 lines.append(line)
 
+
+    # Remove all spaces
+    for i in range(len(lines)):
+        for j in range(len(lines[i])):
+            lines[i][j] = lines[i][j].strip()    
+
     return lines

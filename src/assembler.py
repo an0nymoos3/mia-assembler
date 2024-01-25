@@ -39,6 +39,11 @@ def text_to_bin(program) -> []:
     bin_program = []
     line_num = 0
 
+    # Remove all spaces
+    for i in range(len(program)):
+        for j in range(len(program[i])):
+            program[i][j] = program[i][j].strip()
+
     # Go through each line
     for line in program:
         try:
