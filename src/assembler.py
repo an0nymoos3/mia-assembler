@@ -37,6 +37,7 @@ def assemble(program) -> list:
 def text_to_bin(program) -> []:
     """ Converts text representation to binary """
     bin_program = []
+    line_num = 0
 
     # Go through each line
     for line in program:
@@ -53,14 +54,16 @@ def text_to_bin(program) -> []:
                 bin_line += get_adr(line)
 
             if len(bin_line) != 16:
-                print(f"Error assembling program! \nLine is not 16 bits long! \nLine: {line} \nResult: {bin_line}")
+                print(f"Error assembling program! \nLine is not 16 bits long! \nLine: {line_num} | {line} \nResult: {bin_line}")
                 exit(1)
 
             bin_program.append(bin_line)
 
         except Exception as e:
-            print(f"Error compiling line: {line} \n{e}")
+            print(f"Error compiling line: {line_num} | {line} \n{e}")
             exit(1)
+
+        line_num += 1
 
     return bin_program
 
@@ -84,8 +87,7 @@ def get_instruction(line) -> str:
 
     # Check if there's no instruction
     if line[0] not in ops:
-        print(f"Error assembling program! \nNo instruction detected! \nLine: {line}")
-        exit(1)
+        print(f"Error assembling program! \nNo instruction detected!")
 
     # Else return instruction in binary
     return ops[line[0]]
@@ -140,8 +142,7 @@ def get_adr(line) -> str:
         return dec_to_bin(line[-1])
 
     # Else error
-    print(f"Error assembling program! \nNo ADR detected or in invalid position! \nLine: {line}")
-    exit(1)
+    print(f"Error assembling program! \nNo ADR detected or in invalid position!")
 
 
 def remove_comments(program) -> list:
@@ -156,7 +157,7 @@ def remove_comments(program) -> list:
             if ";" in line[j]:
                 line[j] = remove_content_from_word(line[j], ";")
         
-        if line[0] == '':
+        if line[0] == '' or line[0] == ' ':
             empty_lines.append(i)
 
     # Remove any empty lines
@@ -187,7 +188,7 @@ def remove_branch_names(program) -> list:
             if "#" in line[j]:
                 line[j] = remove_content_from_word(line[j], "#")
         
-        if line[0] == '':
+        if line[0] == '' or line[0] == ' ':
             empty_lines.append(i)
 
     # Remove any empty lines
@@ -245,7 +246,6 @@ def calc_branch_jmps(program) -> list:
                 # so that it gets parsed to binary later in assember
                 line[1] = "$" + dec_to_hex(str(rel_jump))
 
-
     return program
 
 
@@ -258,4 +258,3 @@ def find_branch(program, branch_name) -> int:
                     return i
 
     print(f"Not branch to jump to found for {branch_name}")
-    exit(1)

@@ -2,13 +2,13 @@
 import sys
 
 from file_parser import parse_file
-from assembler import assemble
+from assembler import assemble, dec_to_hex
 
 def print_program(program) -> None:
     """  Prints final program to terminal. """
     line_nr = 0
     for line in program:
-        print(f"line: {line_nr} | {line}")
+        print(f"line: {dec_to_hex(str(line_nr))} | {line}")
         line_nr += 1
 
 
