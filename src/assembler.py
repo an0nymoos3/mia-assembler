@@ -11,9 +11,11 @@
     or converting names to jumps.
 """
 
-def assemble(program) -> []:
+def assemble(program) -> list:
     """ Converts text representation of .ass program to hex representation """
-    remove_comments(program)
+    remove_whole_line_comments(program) # Need to do this for line jump calculations to work
+    calc_branch_jmps(program)
+    remove_remaining_comments(program)
     bin_program = text_to_bin(program)
 
     hex_program = []
@@ -121,7 +123,20 @@ def get_adr(line) -> str:
     exit(1)
 
 
-def remove_comments(program) -> []:
+def remove_whole_line_comments(program) -> list:
+    comment_lines = []
+    
+    for i in range(len(program)):
+        if "#" in program[i][0]:
+            comment_lines.append(i)
+
+    for line in comment_lines:
+        program.remove(program[line])
+
+    return program
+
+
+def remove_remaining_comments(program) -> list:
     """ Program of all its comments. Leaving only lines of code. """
     empty_lines = []
 
@@ -167,3 +182,38 @@ def bin_to_hex(bin) -> str:
 def dec_to_bin(Y) -> str:
     """ Covers LSR instruction which uses Y instead of ADR """
     return "{0:08b}".format(int(Y, 10))
+
+
+def dec_to_hex(dec) -> str:
+    """ Returns decimal number in hexadecimal. """
+    return "{0:02X}".format(int(dec, 10))
+
+
+def calc_branch_jmps(program) -> list:
+    """ Replaces all jumps to #NAME with the proper relative jump numbers """
+    for i in range(len(program)):
+        line = program[i]
+
+        if line[0] == "BNE" or line[0] == "BRA":
+            if "#" in line[1]:
+                branch_name = line[1].strip()
+                branch_line_num = find_branch(program, branch_name) - 1
+
+                if i < branch_line_num:
+                    rel_jump = branch_line_num - i
+                else:
+                    rel_jump = 255 - (i - branch_line_num)
+
+                # Replace name with an ADR looking hex number, 
+                # so that it gets parsed to binary later in assember
+                line[1] = "$" + dec_to_hex(str(rel_jump))
+
+    return program
+
+
+def find_branch(program, branch_name) -> int:
+    """ This function assumes there will be a brach with the name specified. """
+    for i in range(len(program)):
+        for word in program[i]:
+            if branch_name in word:
+                return i

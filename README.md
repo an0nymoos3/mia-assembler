@@ -27,7 +27,7 @@ program has to be validated by the programmer to guarantee a successful assemble
 | AND         | GRx, M, ADR | GRx :=GRx & PM(A)           |
 | LSR         | GRx, M, Y   | Logical shift right Y steps |
 | BRA         | ADR         | PC :=PC+1+ADR               |
-| BNE         | ADR         | PC:= PC+1                   |
+| BNE         | ADR         | PC:= PC+1+ADR, if Z=0       |
 | HALT        |             | Exits program               |
 
 ### Other features
@@ -41,13 +41,10 @@ program has to be validated by the programmer to guarantee a successful assemble
 ... # This is a comment on the same line as code.
 ```
 
-## Planned features
-- Branch/jump to name rather than relative instructions.
-Example: 
+- Absolute jumps with branch names. Example:
 ```
-BNE &BRANCH
-...
+BRA #JUMP_HERE
 
-&BRANCH
-...
+
+LOAD, GRx, $AB #JUMP_HERE
 ```
