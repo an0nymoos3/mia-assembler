@@ -169,7 +169,7 @@ def remove_comments(program) -> list:
     for line_nr in empty_lines:
         program.remove(program[line_nr])
 
-    return program
+    return strip_program(program)
 
 
 def remove_content_from_word(word, symbol) -> str:
@@ -179,6 +179,15 @@ def remove_content_from_word(word, symbol) -> str:
     for i in range(len(word)):
         if word[i] == symbol:
             return word[:i]
+        
+
+def strip_program(program) -> list:
+    """Removes all spaces for all words in program."""
+    for i in range(len(program)):
+        for j in range(len(program[i])):
+            program[i][j] = program[i][j].strip()
+
+    return program
 
 
 def remove_branch_names(program) -> list:
@@ -200,7 +209,7 @@ def remove_branch_names(program) -> list:
     for line_nr in empty_lines:
         program.remove(program[line_nr])
 
-    return program
+    return strip_program(program)
 
 
 def hex_to_bin(hex) -> str:
