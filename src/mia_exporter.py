@@ -1,23 +1,25 @@
 from assembler import dec_to_hex
 
+
 def write_to_file(file_name, program) -> None:
-    """ Exports the program to a .mia file"""
+    """Exports the program to a .mia file"""
     pm_mem = """PM:
 """
 
     for i in range(len(program)):
         pm_mem += dec_to_hex(str(i)).lower() + ": " + program[i] + "\n"
 
-    for i in range(len(program), 256): # Fill the remaining PM to $FF with 0000
+    for i in range(len(program), 256):  # Fill the remaining PM to $FF with 0000
         pm_mem += dec_to_hex(str(i)).lower() + ": " + "0000" + "\n"
-        
+
     mia_program = pm_mem + get_cpu_setup()
 
-    with open(file_name, 'w') as f:
+    with open(file_name, "w") as f:
         f.writelines(mia_program)
 
+
 def get_cpu_setup() -> str:
-    """ String containing setup for """
+    """String containing setup for"""
     u_mem_str = """
 MyM:
 00: 00f8000
@@ -52,15 +54,15 @@ MyM:
 1d: 0000780
 1e: 000041a
 1f: 0000180
-20: 000049a
-21: 0000180
-22: 0380000
-23: 0a80000
-24: 0000180
-25: 0600180
-26: 0000000
-27: 0000000
-28: 0000000
+20: 00004a3
+21: 000071a
+22: 0600180
+23: 000059a
+24: 0600180
+25: 0380000
+26: 0a80000
+27: 0000180
+28: 0600180
 29: 0000000
 2a: 0000000
 2b: 0000000
@@ -160,8 +162,8 @@ K1:
 07: 1b
 08: 1e
 09: 20
-0a: 22
-0b: 25
+0a: 25
+0b: 28
 0c: 00
 0d: 00
 0e: 00
