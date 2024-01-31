@@ -258,7 +258,7 @@ def calc_branch_jmps(program) -> list:
                     rel_jump = 255 - (i - branch_line_num)
 
                 # Offset the ucode (PC = PC + 1 + ADR)
-                rel_jump = rel_jump - 1
+                rel_jump = rel_jump
             
                 # Replace name with an ADR looking hex number,
                 # so that it gets parsed to binary later in assember
