@@ -252,9 +252,17 @@ def calc_branch_jmps(program) -> list:
                 branch_name = line[1].strip()
                 branch_line_num = find_branch(program, branch_name)
 
+                if i < branch_line_num:
+                    rel_jump = branch_line_num - i
+                else:
+                    rel_jump = 255 - (i - branch_line_num)
+
+                # Offset the ucode (PC = PC + 1 + ADR)
+                rel_jump = rel_jump - 1
+            
                 # Replace name with an ADR looking hex number,
                 # so that it gets parsed to binary later in assember
-                line[1] = "$" + dec_to_hex(str(branch_line_num))
+                line[1] = "$" + dec_to_hex(str(rel_jump))
 
     return program
 
