@@ -35,7 +35,7 @@ def main() -> None:
         print("Invalid argument! \n.ass file not detected!")
         exit(1)
 
-    print(f"Compiling {file_name}...")
+    print(f"Assembling {file_name}...")
     code, vs_code_lines = parse_file(file_name)
     hex_program = assemble(code)
 
