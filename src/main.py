@@ -32,7 +32,7 @@ def main() -> None:
         if sys.argv[2] == "--debug":
             debug = True
 
-    if (".ass" or ".asm") not in file_name:
+    if (".ass" and ".asm") not in file_name:
         print("Invalid argument! \n.ass file not detected!")
         exit(1)
 
