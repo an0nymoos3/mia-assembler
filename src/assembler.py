@@ -82,7 +82,6 @@ def get_instruction(line) -> str:
         "BEQ": "1000",  # 08
         "BGE": "1001",  # 09
         "CMP": "1010",  # 0A
-        "RAR": "1011",  # 0B
         "HALT": "1111",  # 0F
     }
 
@@ -252,10 +251,10 @@ def calc_branch_jmps(program) -> list:
                 branch_name = line[1].strip()
                 branch_line_num = find_branch(program, branch_name)
 
-                if i < branch_line_num:
-                    rel_jump = branch_line_num - i
+                if i > branch_line_num:
+                    rel_jump = i - branch_line_num + 1 # +1 to compensate for PC = PC + 1
                 else:
-                    rel_jump = 255 - (i - branch_line_num)
+                    rel_jump = 256 - (branch_line_num - i) + 2 # another compensation
             
                 # Replace name with an ADR looking hex number,
                 # so that it gets parsed to binary later in assember
