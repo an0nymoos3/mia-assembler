@@ -252,9 +252,11 @@ def calc_branch_jmps(program) -> list:
                 branch_line_num = find_branch(program, branch_name)
 
                 if i > branch_line_num:
-                    rel_jump = i - branch_line_num + 1 # +1 to compensate for PC = PC + 1
+                    # Because PC will go PC++ during jump,we pretend we're on a line below (i + 1)
+                    rel_jump = i + 1 - branch_line_num 
                 else:
-                    rel_jump = 256 - (branch_line_num - i) + 2 # another compensation
+                    # See compensation above
+                    rel_jump = 256 - (branch_line_num - (i + 1)) 
             
                 # Replace name with an ADR looking hex number,
                 # so that it gets parsed to binary later in assember
