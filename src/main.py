@@ -9,6 +9,7 @@ from mia_exporter import write_to_file
 def export_program(program, source_code, file_name, debug, vs_code_lines) -> None:
     """Prints final program to terminal."""
     file_name = file_name.replace(".ass", ".mia")
+    file_name = file_name.replace(".asm", ".mia")
 
     if debug:
         for i in range(len(program)):
